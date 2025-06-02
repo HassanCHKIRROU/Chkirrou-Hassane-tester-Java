@@ -32,6 +32,14 @@ public class ParkingService {
             ParkingSpot parkingSpot = getNextParkingNumberIfAvailable();
             if(parkingSpot !=null && parkingSpot.getId() > 0){
                 String vehicleRegNumber = getVehichleRegNumber();
+                
+                int nbTickets = ticketDAO.getNbTicket(vehicleRegNumber);
+                //Pour les utilisateurs réguliers
+                
+                if(nbTickets>0) {
+                	System.out.println("Heureux de vous voir! En tant qu'utilisateur régulier de notre parking, "
+                			+ "vous allez obtenir une remise de 5% ");
+                }
                 parkingSpot.setAvailable(false);
                 parkingSpotDAO.updateParking(parkingSpot);//allot this parking space and mark it's availability as false
 
@@ -52,6 +60,8 @@ public class ParkingService {
         }catch(Exception e){
             logger.error("Unable to process incoming vehicle",e);
         }
+        
+        
     }
 
     private String getVehichleRegNumber() throws Exception {
@@ -101,9 +111,21 @@ public class ParkingService {
         try{
             String vehicleRegNumber = getVehichleRegNumber();
             Ticket ticket = ticketDAO.getTicket(vehicleRegNumber);
+            
             Date outTime = new Date();
             ticket.setOutTime(outTime);
-            fareCalculatorService.calculateFare(ticket);
+            
+             // verifier si l'utilisateur est récurrent(régulier)
+            int nbTickets = ticketDAO.getNbTicket(vehicleRegNumber);
+            boolean discount = nbTickets>1;
+             
+              //Calcul des tarifs pour les utilisateurs réguliers et non réguliers
+            
+            fareCalculatorService.calculateFare(ticket,false);
+            
+            if(discount)
+            	System.out.println("Discount of 5% for regular users.");
+            
             if(ticketDAO.updateTicket(ticket)) {
                 ParkingSpot parkingSpot = ticket.getParkingSpot();
                 parkingSpot.setAvailable(true);

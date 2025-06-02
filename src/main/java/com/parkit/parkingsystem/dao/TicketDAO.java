@@ -86,4 +86,23 @@ public class TicketDAO {
         }
         return false;
     }
+    
+    // methode pour récuperer les véhicule récurrents
+    
+    public int getNbTicket(String vehicleRegNumber) {
+    	//implementation avec JDBC
+    	try(Connection con = dataBaseConfig.getConnection();
+    		PreparedStatement ps = con.prepareStatement("SELECT COUNT(*) FROM ticket WHERE VEHICLE_REG_NUMBER=? ")) {
+    		ps.setString(1,vehicleRegNumber);
+    		ResultSet rs = ps.executeQuery();
+    		if(rs.next()) {
+    			return rs.getInt(1);
+    		}
+    	}catch(Exception ex){
+    		logger.error("Erreur lors de la récupération du nombre de tickets", ex);
+    		
+    	}
+    			
+    	return 0;
+    }
 }
