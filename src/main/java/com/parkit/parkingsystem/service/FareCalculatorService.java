@@ -13,7 +13,7 @@ public class FareCalculatorService {
        
         
         /**
-         * Correction du bug par remplacement de l'heure d'entrée et de sortie en Hour --> Millisecondes
+         * Correction du bug par remplacement de l'heure d'entrée et de sortie de: Hour --> Millisecondes
          * 
          * duration en heure
          */
@@ -21,7 +21,7 @@ public class FareCalculatorService {
         long durationInMillis = ticket.getOutTime().getTime() - ticket.getInTime().getTime();
         double durationInHours = (double)durationInMillis/(60*60*1000);
   
-       /*
+       
         switch (ticket.getParkingSpot().getParkingType()){
             case CAR: {
                 ticket.setPrice(durationInHours * Fare.CAR_RATE_PER_HOUR);
@@ -54,9 +54,9 @@ public class FareCalculatorService {
           default:
         	  throw new IllegalArgumentException("UnKnown Parking TYpe");
         }  
-   */
+   
     
-    //Implementer la fonctionnalité de la remise de 5% pour les utilisateyrs réguliers
+    //Implementation de la fonctionnalité de la remise de 5% pour les utilisateurs réguliers
     
     double ratePerHour;
     
