@@ -11,6 +11,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.Date;
 
+// représente la logique métier centrale du système de gestion de parking.
 public class ParkingService {
 
     private static final Logger logger = LogManager.getLogger("ParkingService");
@@ -32,7 +33,7 @@ public class ParkingService {
     
     
     
-    
+    //Gérer l’entrée d’un véhicule et créer un ticket
     public void processIncomingVehicle() {
         try{
             ParkingSpot parkingSpot = getNextParkingNumberIfAvailable();
@@ -67,9 +68,9 @@ public class ParkingService {
             logger.error("Unable to process incoming vehicle",e);
         }
         
-        
     }
-
+    
+    //Demande à l’utilisateur de saisir son numéro d’immatriculation.
     private String getVehichleRegNumber() throws Exception {
         System.out.println("Please type the vehicle registration number and press enter key");
         return inputReaderUtil.readVehicleRegistrationNumber();
@@ -77,7 +78,7 @@ public class ParkingService {
 
     
     
-    
+    //Trouver la prochaine place libre dans le parking.
     public ParkingSpot getNextParkingNumberIfAvailable(){
         int parkingNumber=0;
         ParkingSpot parkingSpot = null;
@@ -97,6 +98,9 @@ public class ParkingService {
         return parkingSpot;
     }
 
+    
+   
+    //Affiche un menu pour que l’utilisateur choisisse entre voiture (1) ou moto (2).
     private ParkingType getVehichleType(){
         System.out.println("Please select vehicle type from menu");
         System.out.println("1 CAR");
@@ -117,11 +121,8 @@ public class ParkingService {
     }
 
     
-    
-    
-    
-    
-    
+   
+    //Gérer la sortie d’un véhicule, calculer le tarif et libérer la place
     public void processExitingVehicle() {
         try{
             String vehicleRegNumber = getVehichleRegNumber();
@@ -136,7 +137,8 @@ public class ParkingService {
              
               //Calcul des tarifs pour les utilisateurs réguliers et non réguliers
             
-            fareCalculatorService.calculateFare(ticket,false);
+            fareCalculatorService.calculateFare(ticket, discount);
+          
             
             if(discount)
             	System.out.println("Discount of 5% for regular users.");

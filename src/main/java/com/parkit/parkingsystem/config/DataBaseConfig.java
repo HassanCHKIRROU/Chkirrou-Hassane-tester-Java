@@ -5,17 +5,23 @@ import org.apache.logging.log4j.Logger;
 
 import java.sql.*;
 
+//  centralise toute la gestion de la connexion à la base de données MySQL dans ce projet 
 public class DataBaseConfig {
 
     private static final Logger logger = LogManager.getLogger("DataBaseConfig");
-
+    
+    
+    
     public Connection getConnection() throws ClassNotFoundException, SQLException {
         logger.info("Create DB connection");
         Class.forName("com.mysql.cj.jdbc.Driver");
         return DriverManager.getConnection(
-                "jdbc:mysql://localhost:3306/prod","root","rootroot");
+                "jdbc:mysql://localhost:3306/prod?serverTimezone=UTC",  //Ajout de fuseau horaire
+                "root",
+                "Skomchia1987!");   //Mot de passe
     }
-
+    
+    
     public void closeConnection(Connection con){
         if(con!=null){
             try {
@@ -26,6 +32,7 @@ public class DataBaseConfig {
             }
         }
     }
+    
 
     public void closePreparedStatement(PreparedStatement ps) {
         if(ps!=null){
@@ -38,6 +45,7 @@ public class DataBaseConfig {
         }
     }
 
+    
     public void closeResultSet(ResultSet rs) {
         if(rs!=null){
             try {

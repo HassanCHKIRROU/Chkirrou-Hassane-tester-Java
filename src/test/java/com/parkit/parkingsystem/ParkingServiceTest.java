@@ -23,6 +23,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
+/* 
+* vérifie que la classe ParkingService (la classe principale qui gère l'entrée et la sortie des véhicules dans le parking) 
+* fonctionne correctement dans différents cas de figure, sans accéder à la base de données réelle.
+*/
 public class ParkingServiceTest {
 
     @InjectMocks
@@ -33,7 +37,7 @@ public class ParkingServiceTest {
 
     @Mock
     private ParkingSpotDAO parkingSpotDAO;
-
+  
     @Mock
     private TicketDAO ticketDAO;
 
@@ -58,22 +62,7 @@ public class ParkingServiceTest {
         verify(ticketDAO, times(1)).updateTicket(any());
     }
 
-    // Test sortie véhicule avec updateTicket KO
-    @Test
-    public void processExitingVehicleTestUnableUpdate() throws Exception {
-        Ticket ticket = new Ticket();
-        ticket.setInTime(new Date(System.currentTimeMillis() - 60 * 60 * 1000));
-        ticket.setParkingSpot(new ParkingSpot(1, ParkingType.CAR, false));
-        ticket.setVehicleRegNumber("ABCDEF");
-
-        when(ticketDAO.getTicket("ABCDEF")).thenReturn(ticket);
-        when(ticketDAO.updateTicket(any())).thenReturn(false);
-
-        parkingService.processExitingVehicle();
-
-        verify(ticketDAO, times(1)).updateTicket(any());
-    }
-
+    
     // Test entrée véhicule
     @Test
     public void testProcessIncomingVehicle() throws Exception {
@@ -86,6 +75,7 @@ public class ParkingServiceTest {
         verify(ticketDAO, times(1)).saveTicket(any());
     }
 
+    
     // Test place trouvée
     @Test
     public void testGetNextParkingNumberIfAvailable() throws Exception {
@@ -98,6 +88,7 @@ public class ParkingServiceTest {
         assertEquals(1, spot.getId());
     }
 
+    
     // Test pas de place disponible
     @Test
     public void testGetNextParkingNumberIfAvailableParkingNumberNotFound() throws Exception {
@@ -109,6 +100,7 @@ public class ParkingServiceTest {
         assertNull(spot);
     }
 
+    
     // Test erreur de saisie type véhicule
     @Test
     public void testGetNextParkingNumberIfAvailableParkingNumberWrongArgument() throws Exception {

@@ -10,12 +10,18 @@ import org.apache.logging.log4j.Logger;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+/*
+ * sert à interagir avec la base de données pour les opérations liées aux places de parking
+ * utilise les requêtes SQL définies dans DBConstants et la configuration JDBC dans DataBaseConfig.
 
+ */
 public class ParkingSpotDAO {
     private static final Logger logger = LogManager.getLogger("ParkingSpotDAO");
 
     public DataBaseConfig dataBaseConfig = new DataBaseConfig();
 
+    
+   // Récupère le numéro de la première place de parking libre pour un type de véhicule donné
     public int getNextAvailableSlot(ParkingType parkingType){
         Connection con = null;
         int result=-1;
@@ -37,8 +43,10 @@ public class ParkingSpotDAO {
         return result;
     }
 
+    
+    //Met à jour la disponibilité (available) d'une place de parking donnée dans la base
     public boolean updateParking(ParkingSpot parkingSpot){
-        //update the availability fo that parking slot
+        
         Connection con = null;
         try {
             con = dataBaseConfig.getConnection();

@@ -3,6 +3,7 @@ package com.parkit.parkingsystem.model;
 import java.util.Calendar;
 import java.util.Date;
 
+//représente un ticket de stationnement associé à un véhicule.
 public class Ticket {
     private int id;
     private ParkingSpot parkingSpot;

@@ -5,11 +5,14 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.Scanner;
 
+//lire les entrées utilisateur via la console
 public class InputReaderUtil {
 
     private static Scanner scan = new Scanner(System.in);
     private static final Logger logger = LogManager.getLogger("InputReaderUtil");
 
+    
+    //Lire et retourner l’option saisie par l’utilisateur dans le menu principal.
     public int readSelection() {
         try {
             int input = Integer.parseInt(scan.nextLine());
@@ -21,6 +24,8 @@ public class InputReaderUtil {
         }
     }
 
+    
+    //Lire le numéro d’immatriculation d’un véhicule depuis la console.
     public String readVehicleRegistrationNumber() throws Exception {
         try {
             String vehicleRegNumber= scan.nextLine();
